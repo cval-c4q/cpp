@@ -8,23 +8,29 @@ class PersonTest : public ::testing::Test {
 		Person person;
 };
 
-TEST(Person, Constructs) {
+TEST(Person, DefaultConstructor) {
 	EXPECT_NO_THROW(Person person);
 }
 
 TEST_F(PersonTest, setName) {
 	EXPECT_NO_THROW(person.setName("John Doe"));
+	EXPECT_EQ(person.name(), "John Doe");
 	EXPECT_ANY_THROW(person.setName(""));
+	EXPECT_EQ(person.name(), "John Doe");
 }
 
 TEST_F(PersonTest, setAddress) {
 	EXPECT_NO_THROW(person.setAddress("123 Prentice Dr."));
+	EXPECT_EQ(person.address(), "123 Prentice Dr.");
 	EXPECT_NO_THROW(person.setAddress(""));
+	EXPECT_EQ(person.address(), "");
 }
 
 TEST_F(PersonTest, setPhone) {
 	EXPECT_NO_THROW(person.setPhone("8001234567"));
+	EXPECT_EQ(person.phone(), "8001234567");
 	EXPECT_NO_THROW(person.setPhone("800-123-4567"));
+	EXPECT_EQ(person.phone(), "800-123-4567");
 	EXPECT_NO_THROW(person.setPhone("800 123 4567"));
 	EXPECT_NO_THROW(person.setPhone("(800) 123-4567"));
 	EXPECT_NO_THROW(person.setPhone("(800)123-4567"));
@@ -39,6 +45,7 @@ TEST_F(PersonTest, setPhone) {
 
 TEST_F(PersonTest, setMass) {
 	EXPECT_NO_THROW(person.setMass(75));
+	EXPECT_EQ(person.mass(), 75);
 	EXPECT_ANY_THROW(person.setMass(0));
 }
 
