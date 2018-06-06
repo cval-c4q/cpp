@@ -26,13 +26,13 @@ END {
 	print("#ifndef	_SIGNAMES_H");
 	print("#define	_SIGNAMES_H");
 
-	printf("\nstatic struct signame {\n" \
+	printf("\nstatic const struct signame {\n" \
 		"	int signo;\n" \
 		"	const char *name;\n" \
 		"} signametbl[] = {\n");
 	for (i=0; i < length(sigtbl); i++)
 		if (sigtbl[i])
-		printf("\t{ %d, \"%s\" },\n", i, sigtbl[i])
+		printf("\t{ %d, \"%s\" },\n", i, substr(sigtbl[i], 4))
 	print("};\n");
 
 	ifdef_cpp_in();
