@@ -6,10 +6,13 @@ LDFLAGS=
 
 all: $(TARGETS)
 
-sigpmask: signames.o sigpmask.cxx errout.h
-	$(CXX) $(CXXFLAGS) signames.o sigpmask.cxx -o $@ $(LDFLAGS)
+sigpmask: signames.o sigpmask.o
+	$(CXX) $? -o $@ $(LDFLAGS)
 
-signames.o: signames.h
+sigpmask.o: sigpmask.cxx errout.h
+
+signames.o: signames.c signames.h
+	$(CC) $(CFLAGS) -c signames.c
 
 signames.h: $(SIGNAL_H) scripts/signames.awk
 	awk -f scripts/signames.awk $(SIGNAL_H) >$@
