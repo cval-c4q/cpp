@@ -32,10 +32,20 @@ int main() {
 		pr_sigset(&sset);
 
 		signal(SIGINT, [](int signo) {
+				std::cout << "\nCaught SIG" << sig_to_str(signo) << "!\n";
+
 				sigset_t sset;
 				if (sigprocmask(0, NULL, &sset) < 0)
 					ERROUT("%s: sigprocmask() failed", __func__);
 				std::cout << "SIG" << sig_to_str(signo) << " signal mask:\n";
+				pr_sigset(&sset);
+
+				std::cout << "SIG" << sig_to_str(signo) << ": sleeping for 5s...\n";
+				sleep(5);
+
+				if (sigpending(&sset) < 0)
+					ERROUT("%s: sigpending() failed", __func__);
+				std::cout << "SIG" << sig_to_str(signo) << ": pending signals:\n";
 				pr_sigset(&sset);
 		});
 
