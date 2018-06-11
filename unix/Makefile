@@ -1,21 +1,17 @@
 
 TARGETS=sigpmask
-SIGNAL_H=/usr/include/sys/signal.h
+SIGNAL_H=$(shell egrep -R "[\t ]*\#define[\t ]+SIGINT[\t ]+[0-9]+" /usr/include | head -n 1 | cut -d ':' -f 1)
 CXXFLAGS=-std=c++11 -g -ggdb
 LDFLAGS=
 
 all: $(TARGETS)
 
-sigpmask: signames.o sigpmask.o
-	$(CXX) $? -o $@ $(LDFLAGS)
-
-sigpmask.o: sigpmask.cxx errout.h
-
-signames.o: signames.c signames.h
-	$(CC) $(CFLAGS) -c signames.c
+sigpmask: signames.c sigpmask.cxx signames.h
+	$(CXX) signames.c sigpmask.cxx -o $@ $(LDFLAGS)
 
 signames.h: $(SIGNAL_H) scripts/signames.awk
 	awk -f scripts/signames.awk $(SIGNAL_H) >$@
 
 clean:
 	-rm -f signames.h $(TARGETS) *.o
+
