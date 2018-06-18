@@ -20,9 +20,9 @@ function ifdef_cpp_out() {
 END {
 	printf("/*\n" \
 		  " * UNIX signal names for build operating system kernel/libc configuration\n" \
-		  " * Automatically generated on %s\n" \
+		  " * Automatically generated from %s on %s\n" \
 		  " * DO NOT EDIT!\n" \
-		  " */\n", strftime("%D %T"));
+		  " */\n", FILENAME, strftime("%D %T"));
 
 	print("#ifndef	_SIGNAMES_H");
 	print("#define	_SIGNAMES_H");
