@@ -13,7 +13,8 @@ function ifdef_cpp_out() {
 }
 
 /#define[[:space:]]+SIG[A-Z]+[[:space:]]+[0-9]+.*/ {
-	sigtbl[$3]=$2
+	if ($2 != "SIGSTKSZ")
+		sigtbl[$3]=$2
 }
 
 END {
