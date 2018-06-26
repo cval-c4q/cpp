@@ -61,15 +61,12 @@ int system(const char *command)
 		sigaction(SIGINT, &osigint, NULL);
 		sigaction(SIGQUIT, &osigquit, NULL);
 		sigprocmask(SIG_SETMASK, &oset, NULL);
-		while (waitpid(pid, &status, 0) < 0)
+		while (waitpid(pid, &status, 0) < 0) {
 			if (errno != EINTR) {
 				status = -1;
 				break;
 			}
-		if (WIFEXITED(status)) // XXX: APUE3 doesn't do this
-			status = WEXITSTATUS(status);
-		else
-			status = -1; // - -1 if exit status cannot be determined
+		}
 	} else {
 		status = -1; // - ... or on failure to fork()
 	}
