@@ -18,6 +18,7 @@ class Strings {
 
 		void display() const;
 		const std::string &at(size_t i) const;
+		size_t size() const;
 		void swap(Strings &other);
 };
 
