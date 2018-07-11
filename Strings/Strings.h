@@ -12,6 +12,7 @@ class Strings {
 		Strings() = default;
 		Strings(size_t, const char *const *);
 		Strings(const Strings &other);
+		Strings(Strings &&other) noexcept;
 		~Strings();
 
 		Strings &operator=(Strings &other);

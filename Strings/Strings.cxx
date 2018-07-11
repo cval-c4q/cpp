@@ -24,7 +24,7 @@ Strings::Strings(size_t argc, const char *const *argv)
 		throw std::invalid_argument("NULL argv with nonzero argc");
 	for (size_t i = 0; i < argc; i++)
 		d_string[i] = argv[i];
-	DEBUG("%s: this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
+	DEBUG("%s(): this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
 }
 
 /**
@@ -36,9 +36,21 @@ Strings::Strings(const Strings &other)
 {
 	for (size_t i = 0; i < other.d_size; i++)
 		d_string[i] = other.d_string[i];
-	DEBUG("%s: this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
+	DEBUG("%s(copy): this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
 }
 
+/**
+ *  Move constructor
+ */
+Strings::Strings(Strings &&other) noexcept
+{
+	DEBUG("%s(move): this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
+	swap(other);
+}
+
+/**
+ *  Destructor
+ */
 Strings::~Strings()
 {
 	DEBUG("%s: this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
@@ -46,6 +58,9 @@ Strings::~Strings()
 		delete[] d_string;
 }
 
+/**
+ *  Overloaded assignment
+ */
 Strings &Strings::operator=(Strings &other)
 {
 	DEBUG("%s: this: %p, other: %p\n", __func__, this, &other);

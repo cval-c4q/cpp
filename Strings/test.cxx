@@ -20,6 +20,15 @@ TEST(Basic, CopyConstructor) {
 	ASSERT_EQ(s_dst.at(1), "that");
 }
 
+TEST(Basic, MoveConstructor) {
+	const char *argv[] = { "this", "that" };
+	auto l = [=](Strings s) -> Strings { return s; };
+	Strings s = l( Strings{sizeof(argv) / sizeof(char*), argv});
+	EXPECT_EQ(s.size(), 2);
+	EXPECT_EQ(s.at(0), "this");
+	ASSERT_EQ(s.at(1), "that");
+}
+
 TEST(Basic, Assignment) {
 	const char *argv1[] = { "lorem", "ipsum" };
 	const char *argv2[] = { "this", "and", "that" };
