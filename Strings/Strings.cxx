@@ -17,13 +17,15 @@ void DEBUG(const char *fmt, ...) {
  *  direct constructor
  */
 Strings::Strings(size_t argc, const char *const *argv)
-	: d_size(argc),
-	  d_string(argc ? new std::string[argc] : nullptr)
 {
 	if (argc > 0 && argv == nullptr)
 		throw std::invalid_argument("NULL argv with nonzero argc");
+
+	d_size = argc;
+	d_string = new std::string[argc];
 	for (size_t i = 0; i < argc; i++)
 		d_string[i] = argv[i];
+
 	DEBUG("%s(): this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
 }
 
@@ -36,6 +38,7 @@ Strings::Strings(const Strings &other)
 {
 	for (size_t i = 0; i < other.d_size; i++)
 		d_string[i] = other.d_string[i];
+
 	DEBUG("%s(copy): this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
 }
 
@@ -45,6 +48,7 @@ Strings::Strings(const Strings &other)
 Strings::Strings(Strings &&other) noexcept
 {
 	DEBUG("%s(move): this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
+
 	swap(other);
 }
 
@@ -54,6 +58,7 @@ Strings::Strings(Strings &&other) noexcept
 Strings::~Strings()
 {
 	DEBUG("%s: this=%p, d_string=%p, d_size: %zu\n", __func__, this, d_string, d_size);
+
 	if (d_string != nullptr)
 		delete[] d_string;
 }
@@ -65,14 +70,17 @@ Strings &Strings::operator=(Strings &other)
 {
 	DEBUG("%s: this: %p, other: %p\n", __func__, this, &other);
 	DEBUG("%s: before: d_string: %p, d_size: %zu\n", __func__, d_string, d_size);
+
 	Strings tmp{other};
 	swap(tmp);
+
 	DEBUG("%s:  after: d_string: %p, d_size: %zu\n", __func__, d_string, d_size);
 	return *this;
 }
 
 void Strings::swap(Strings &other) {
 	DEBUG("%s: this: %p, other: %p\n", __func__, this, &other);
+
 	uint8_t buffer[sizeof(Strings)];
 	memcpy(buffer, this, sizeof(Strings));
 	memcpy(this, &other, sizeof(Strings));
